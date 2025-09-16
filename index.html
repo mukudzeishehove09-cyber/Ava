@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ava</title>
+
+  <!-- Link to styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#050507">
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js")
+          .then(() => console.log("Service Worker registered"))
+          .catch(err => console.error("SW registration failed:", err));
+      });
+    }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <h1>👋 Hi, I’m Ava</h1>
+    <p>Your AI Assistant</p>
+
+    <input type="text" id="userInput" placeholder="Type something...">
+    <button id="sendBtn">Send</button>
+
+    <div id="chatBox"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+  </html>
