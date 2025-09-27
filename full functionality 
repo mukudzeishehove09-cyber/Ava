@@ -1,0 +1,1611 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Home, 
+  BarChart3, 
+  User, 
+  Send, 
+  Plus, 
+  TrendingUp, 
+  DollarSign, 
+  CreditCard,
+  Bell,
+  MoreHorizontal,
+  ArrowUpRight,
+  ArrowDownLeft,
+  ChevronRight,
+  Wallet,
+  Users,
+  Globe,
+  Bot,
+  Zap,
+  Target,
+  Building,
+  Eye,
+  Play,
+  Pause,
+  Settings,
+  CheckCircle,
+  Clock,
+  Star,
+  Briefcase,
+  ShoppingCart,
+  MessageSquare,
+  Camera,
+  FileText,
+  Lightbulb,
+  Rocket,
+  Crown,
+  Shield,
+  Download,
+  Wifi,
+  WifiOff,
+  Grid3X3
+} from 'lucide-react';
+
+const AvaApp = () => {
+  const [currentTab, setCurrentTab] = useState('Home');
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+
+  // PWA Installation Handler
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setInstallPrompt(null);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  // Online/Offline Handler
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    
+    const result = await installPrompt.prompt();
+    if (result.outcome === 'accepted') {
+      setInstallPrompt(null);
+    }
+  };
+
+  // Mock data
+  const transactions = [
+    { name: 'Henry Alex', amount: 230.50, type: 'received', avatar: '👨‍💼' },
+    { name: 'Cody Fisher', amount: 4406, type: 'sent', avatar: '👨‍🎨' },
+    { name: 'Guy Hawkins', amount: 395.64, type: 'received', avatar: '👨‍💻' },
+    { name: 'Devon Lane', amount: 300, type: 'pending', avatar: '👩‍💼' }
+  ];
+
+  const bills = [
+    { name: 'Dribbble', amount: 100.00, date: '15th Aug', color: 'bg-pink-500' },
+    { name: 'McDonalds', amount: 132.00, date: '20th Aug', color: 'bg-yellow-500' }
+  ];
+
+  const HomeScreen = () => (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-2xl overflow-hidden">
+            <img 
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23374151'/%3E%3Cstop offset='100%25' style='stop-color:%23111827'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23grad)'/%3E%3Ctext x='50' y='60' text-anchor='middle' fill='white' font-size='40'%3E👨‍💼%3C/text%3E%3C/svg%3E" 
+              alt="Avatar" 
+              className="w-full h-full object-cover" 
+            />
+          </div>
+          <div>
+            <p className="text-slate-300 text-sm">Welcome</p>
+            <h2 className="text-white font-semibold">Alexandra!</h2>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="text-slate-300 text-sm">Your</p>
+          <p className="text-white font-medium">Medical Card</p>
+        </div>
+      </div>
+
+      {/* Main Balance Card */}
+      <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-3xl p-6 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full -mr-16 -mt-16"></div>
+        
+        <div className="flex justify-between items-start mb-6 relative z-10">
+          <div>
+            <p className="text-slate-300 text-sm mb-1">Balance</p>
+            <h1 className="text-4xl font-bold mb-2">$2,000</h1>
+            <div className="flex items-center">
+              <TrendingUp className="w-4 h-4 text-green-400 mr-1" />
+              <span className="text-green-400 text-sm">$125.60</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-slate-400 text-xs mb-1">CARD</p>
+            <p className="text-white text-sm font-mono">1234 ***</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <button className="flex items-center space-x-2 bg-white/10 backdrop-blur rounded-2xl px-6 py-3 hover:bg-white/20 transition-all">
+            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+              <Send className="w-3 h-3" />
+            </div>
+            <span className="font-medium">Send</span>
+          </button>
+          
+          <div className="text-right">
+            <p className="text-slate-400 text-xs">Visa Gold</p>
+            <p className="text-slate-400 text-xs">**** 6506</p>
+            <p className="text-white font-bold text-lg">$1500.50</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Statistics Section */}
+      <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-slate-800 font-bold text-lg">Statistics</h3>
+          <button className="flex items-center text-slate-600 text-sm">
+            <span>View All</span>
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </button>
+        </div>
+
+        <div className="mb-4">
+          <div className="flex items-center justify-between text-sm text-slate-600 mb-3">
+            <span>Senders & Receivers</span>
+            <span>Amount</span>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {transactions.map((transaction, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-lg">
+                  {transaction.avatar}
+                </div>
+                <div>
+                  <p className="text-slate-800 font-medium text-sm">{transaction.name}</p>
+                  <div className="flex items-center">
+                    {transaction.type === 'received' && (
+                      <ArrowDownLeft className="w-3 h-3 text-red-500 mr-1" />
+                    )}
+                    {transaction.type === 'sent' && (
+                      <ArrowUpRight className="w-3 h-3 text-green-500 mr-1" />
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-slate-800 font-bold text-sm">
+                  ${transaction.amount.toLocaleString()}
+                </p>
+              </div>
+            </div>
+          ))}
+          
+          {/* Pay Now Button */}
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
+                <span className="text-lg">👩‍💼</span>
+              </div>
+              <div>
+                <p className="text-slate-800 font-medium text-sm">Devon Lane</p>
+                <p className="text-slate-500 text-xs">Requested $300</p>
+              </div>
+            </div>
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-slate-800 font-medium px-4 py-2 rounded-xl text-sm transition-colors">
+              Pay Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const DashboardScreen = () => (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-white text-2xl font-bold">Dashboard</h1>
+        <button className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
+          <Bell className="w-5 h-5 text-white" />
+        </button>
+      </div>
+
+      {/* Balance Card */}
+      <div className="text-right mb-6">
+        <div className="bg-slate-700 rounded-2xl px-4 py-2 inline-block">
+          <p className="text-white font-bold text-xl">$2,589</p>
+          <p className="text-slate-300 text-xs">22 Jan</p>
+        </div>
+      </div>
+
+      {/* Chart Area */}
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 relative overflow-hidden h-64">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        
+        {/* Chart Data */}
+        <div className="flex items-end justify-center h-full space-x-8 relative z-10">
+          <div className="text-center">
+            <div className="w-px bg-white/20 mb-2" style={{ height: '60px' }}></div>
+            <span className="text-slate-400 text-xs">1200</span>
+          </div>
+          <div className="text-center">
+            <div className="w-px bg-white/20 mb-2" style={{ height: '80px' }}></div>
+            <span className="text-slate-400 text-xs">1300</span>
+          </div>
+          <div className="text-center">
+            <div className="w-px bg-white/40 mb-2" style={{ height: '100px' }}></div>
+            <span className="text-slate-400 text-xs">1400</span>
+          </div>
+          <div className="text-center">
+            <div className="w-px bg-white/60 mb-2" style={{ height: '120px' }}></div>
+            <span className="text-slate-400 text-xs">1500</span>
+          </div>
+          <div className="text-center relative">
+            <div className="w-px bg-white mb-2" style={{ height: '140px' }}></div>
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full"></div>
+            <span className="text-white text-xs font-bold">1600</span>
+          </div>
+          <div className="text-center">
+            <div className="w-px bg-white/40 mb-2" style={{ height: '90px' }}></div>
+            <span className="text-slate-400 text-xs">1400</span>
+          </div>
+        </div>
+        
+        {/* Curved line overlay */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 300 200">
+          <path 
+            d="M 50 150 Q 100 120 150 130 T 250 100" 
+            stroke="white" 
+            strokeWidth="2" 
+            fill="none" 
+            opacity="0.8"
+          />
+        </svg>
+      </div>
+
+      {/* Wallet Balance */}
+      <div className="flex items-center justify-between bg-white/5 backdrop-blur rounded-2xl p-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+            <Wallet className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-white">Wallet Balance</span>
+        </div>
+        <span className="text-white font-bold text-lg">$1500,50</span>
+      </div>
+
+      {/* Bills Due */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white font-bold">Bills due</h3>
+          <button className="text-blue-400 text-sm flex items-center">
+            <Plus className="w-4 h-4 mr-1" />
+            Add a Bill
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          {bills.map((bill, index) => (
+            <div key={index} className="bg-white/90 backdrop-blur rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className={`w-8 h-8 ${bill.color} rounded-full flex items-center justify-center text-white text-sm font-bold`}>
+                  {bill.name.charAt(0)}
+                </div>
+              </div>
+              <p className="text-slate-800 font-bold text-lg mb-1">{bill.name}</p>
+              <p className="text-slate-600 text-sm mb-2">{bill.date}</p>
+              <p className="text-slate-800 font-bold">${bill.amount.toFixed(2)}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Send Money Button */}
+      <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-4 rounded-2xl flex items-center justify-center space-x-2 transition-all">
+        <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+          <Send className="w-3 h-3" />
+        </div>
+        <span>Send Money</span>
+      </button>
+    </div>
+  );
+
+  const ProfileScreen = () => (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-white text-2xl font-bold">Profile</h1>
+        <Settings className="w-6 h-6 text-slate-400" />
+      </div>
+
+      {/* Profile Card */}
+      <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-6 text-white">
+        <div className="flex items-center space-x-4 mb-6">
+          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+            👨‍💼
+          </div>
+          <div>
+            <h2 className="text-xl font-bold">Alexandra Smith</h2>
+            <p className="text-blue-200">Digital Empire Builder</p>
+            <div className="flex items-center space-x-2 mt-1">
+              <Crown className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm">Ava Premium</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center">
+            <p className="text-2xl font-bold">47</p>
+            <p className="text-blue-200 text-sm">AI Clones</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold">$89K</p>
+            <p className="text-blue-200 text-sm">Monthly Revenue</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold">15</p>
+            <p className="text-blue-200 text-sm">Platforms</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Menu Items */}
+      <div className="space-y-4">
+        {[
+          { icon: Shield, label: 'Privacy & Security', desc: 'Manage your data and security' },
+          { icon: Bell, label: 'Notifications', desc: 'Configure alerts and notifications' },
+          { icon: Zap, label: 'AI Preferences', desc: 'Customize your AI behavior' },
+          { icon: Building, label: 'Business Setup', desc: 'Legal and business configuration' },
+          { icon: Crown, label: 'Subscription', desc: 'Ava Premium - $199/month' }
+        ].map((item, index) => (
+          <button key={index} className="w-full flex items-center justify-between p-4 bg-white/5 backdrop-blur rounded-2xl hover:bg-white/10 transition-all">
+            <div className="flex items-center space-x-3">
+              <item.icon className="w-5 h-5 text-slate-400" />
+              <div className="text-left">
+                <p className="text-white text-sm font-medium">{item.label}</p>
+                <p className="text-slate-400 text-xs">{item.desc}</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const screens = {
+    'Home': <HomeScreen />,
+    'Dashboard': <DashboardScreen />,
+    'Profile': <ProfileScreen />
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-400/10 via-transparent to-transparent"></div>
+      
+      {/* PWA Manifest */}
+      <div style={{ display: 'none' }}>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0f172a" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Ava AI" />
+      </div>
+
+      <div className="max-w-sm mx-auto min-h-screen relative z-10">
+        {/* Status Bar */}
+        <div className="flex items-center justify-between px-6 py-4 text-white text-sm">
+          <span className="font-medium">9:41</span>
+          <div className="flex items-center space-x-1">
+            <div className="flex space-x-1">
+              <div className="w-1 h-1 bg-white rounded-full"></div>
+              <div className="w-1 h-1 bg-white rounded-full"></div>
+              <div className="w-1 h-1 bg-white rounded-full"></div>
+              <div className="w-1 h-1 bg-white/50 rounded-full"></div>
+            </div>
+            <Wifi className="w-4 h-4 ml-2" />
+            <div className="w-6 h-3 border border-white rounded-sm ml-1">
+              <div className="w-4 h-1.5 bg-white rounded-sm m-0.5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Install PWA Button */}
+        {installPrompt && !isInstalled && (
+          <div className="px-6 mb-4">
+            <button 
+              onClick={handleInstall}
+              className="w-full flex items-center justify-center space-x-2 bg-blue-600/80 backdrop-blur border border-blue-400/30 text-white px-4 py-3 rounded-2xl text-sm hover:bg-blue-600 transition-all"
+            >
+              <Download className="w-4 h-4" />
+              <span>Install Ava App</span>
+            </button>
+          </div>
+        )}
+
+        {/* Main Content */}
+        <div className="px-6 pb-24">
+          {screens[currentTab]}
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm">
+          <div className="mx-4 mb-6 bg-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl">
+            <div className="flex items-center justify-around py-4 px-6">
+              {[
+                { id: 'Home', label: 'Home' },
+                { id: 'Dashboard', label: 'Dashboard' },
+                { id: 'Profile', label: 'Profile' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setCurrentTab(tab.id)}
+                  className={`relative px-6 py-2 rounded-2xl transition-all duration-300 ${
+                    currentTab === tab.id 
+                      ? 'bg-white/20 text-white shadow-lg' 
+                      : 'text-slate-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <span className="text-sm font-medium">{tab.label}</span>
+                  {currentTab === tab.id && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full"></div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Service Worker Registration */}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                  console.log('SW registered: ', registration);
+                }, function(registrationError) {
+                  console.log('SW registration failed: ', registrationError);
+                });
+            });
+          }
+        `
+      }} />
+    </div>
+  );
+};
+
+export default AvaApp;
+// Ava AI Backend Server
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+const JWT_SECRET = process.env.JWT_SECRET || 'ava-ai-secret-key-change-in-production';
+
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP'
+});
+app.use('/api', limiter);
+
+// Mock Database (In production, use MongoDB, PostgreSQL, etc.)
+const mockDB = {
+  users: [
+    {
+      id: '1',
+      email: 'alexandra@example.com',
+      name: 'Alexandra Smith',
+      password: '$2a$10$hash', // In real app, hash passwords
+      subscription: 'premium',
+      createdAt: new Date('2024-01-15'),
+      settings: {
+        notifications: true,
+        aiPreferences: {
+          aggressiveness: 'moderate',
+          languages: ['en'],
+          workingHours: '9-17'
+        }
+      }
+    }
+  ],
+  
+  aiClones: [
+    {
+      id: '1',
+      userId: '1',
+      name: 'CEO Clone',
+      type: 'ceo',
+      status: 'active',
+      avatar: '👔',
+      tasks: 24,
+      revenue: 5200,
+      efficiency: 94,
+      activity: 'Making hiring decisions',
+      lastActive: new Date(),
+      settings: {
+        decisionThreshold: 'high',
+        autoApprove: false,
+        workingHours: '24/7'
+      }
+    },
+    {
+      id: '2',
+      userId: '1',
+      name: 'Creator Clone',
+      type: 'creator',
+      status: 'active',
+      avatar: '🎬',
+      tasks: 18,
+      revenue: 3800,
+      efficiency: 87,
+      activity: 'Posted 5 videos today',
+      lastActive: new Date(),
+      settings: {
+        platforms: ['youtube', 'tiktok', 'instagram'],
+        contentStyle: 'engaging',
+        postFrequency: 'daily'
+      }
+    },
+    {
+      id: '3',
+      userId: '1',
+      name: 'Sales Clone',
+      type: 'sales',
+      status: 'active',
+      avatar: '💼',
+      tasks: 31,
+      revenue: 6420,
+      efficiency: 91,
+      activity: 'Closed 3 deals this week',
+      lastActive: new Date(),
+      settings: {
+        leadThreshold: 'medium',
+        followUpCadence: '3-days',
+        closeRate: 'aggressive'
+      }
+    }
+  ],
+  
+  incomeStreams: [
+    {
+      id: '1',
+      userId: '1',
+      name: 'Dropshipping Store',
+      type: 'ecommerce',
+      platform: 'Shopify',
+      revenue: 4200,
+      growth: 15,
+      status: 'growing',
+      icon: '🛍️',
+      createdAt: new Date('2024-09-01'),
+      lastUpdated: new Date(),
+      products: 45,
+      orders: 123
+    },
+    {
+      id: '2',
+      userId: '1',
+      name: 'YouTube Channel',
+      type: 'content',
+      platform: 'YouTube',
+      revenue: 2800,
+      growth: 8,
+      status: 'stable',
+      icon: '📺',
+      createdAt: new Date('2024-08-15'),
+      subscribers: 23100,
+      views: 456000
+    }
+  ],
+  
+  platforms: [
+    {
+      id: '1',
+      userId: '1',
+      name: 'Instagram',
+      type: 'social',
+      connected: true,
+      followers: 45200,
+      engagement: 4.2,
+      posts: 156,
+      synced: true,
+      lastSync: new Date(),
+      apiKey: 'encrypted_key_here'
+    },
+    {
+      id: '2',
+      userId: '1',
+      name: 'TikTok',
+      type: 'social',
+      connected: true,
+      followers: 89700,
+      engagement: 6.8,
+      posts: 234,
+      synced: true,
+      lastSync: new Date(),
+      apiKey: 'encrypted_key_here'
+    }
+  ],
+  
+  activities: [
+    {
+      id: '1',
+      userId: '1',
+      action: 'Creator Clone posted new video',
+      type: 'content',
+      timestamp: new Date(Date.now() - 2 * 60 * 1000),
+      metadata: {
+        platform: 'youtube',
+        videoId: 'abc123',
+        views: 1200
+      }
+    },
+    {
+      id: '2',
+      userId: '1',
+      action: 'Sales Clone closed $2,500 deal',
+      type: 'revenue',
+      timestamp: new Date(Date.now() - 15 * 60 * 1000),
+      metadata: {
+        amount: 2500,
+        client: 'TechCorp Inc',
+        source: 'linkedin'
+      }
+    }
+  ]
+};
+
+// Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Access token required' });
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid or expired token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Authentication Routes
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
+    
+    // Find user (in production, query from database)
+    const user = mockDB.users.find(u => u.email === email);
+    
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    // In production, use bcrypt.compare(password, user.password)
+    const isValidPassword = password === 'demo123'; // Demo password
+    
+    if (!isValidPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+    
+    const { password: _, ...userWithoutPassword } = user;
+    
+    res.json({
+      token,
+      user: userWithoutPassword,
+      expiresIn: '7d'
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password required' });
+    }
+    
+    // Check if user exists
+    const existingUser = mockDB.users.find(u => u.email === email);
+    if (existingUser) {
+      return res.status(409).json({ error: 'User already exists' });
+    }
+    
+    // In production, hash password with bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    const newUser = {
+      id: uuidv4(),
+      name,
+      email,
+      password: hashedPassword,
+      subscription: 'free',
+      createdAt: new Date(),
+      settings: {
+        notifications: true,
+        aiPreferences: {
+          aggressiveness: 'moderate',
+          languages: ['en'],
+          workingHours: '9-17'
+        }
+      }
+    };
+    
+    mockDB.users.push(newUser);
+    
+    const token = jwt.sign(
+      { userId: newUser.id, email: newUser.email },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+    
+    const { password: _, ...userWithoutPassword } = newUser;
+    
+    res.status(201).json({
+      token,
+      user: userWithoutPassword,
+      message: 'User created successfully'
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// AI Clones Routes
+app.get('/api/clones', authenticateToken, (req, res) => {
+  try {
+    const userClones = mockDB.aiClones.filter(clone => clone.userId === req.user.userId);
+    res.json({ data: userClones, count: userClones.length });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch clones' });
+  }
+});
+
+app.post('/api/clones', authenticateToken, (req, res) => {
+  try {
+    const { name, type, settings } = req.body;
+    
+    if (!name || !type) {
+      return res.status(400).json({ error: 'Name and type are required' });
+    }
+    
+    const newClone = {
+      id: uuidv4(),
+      userId: req.user.userId,
+      name,
+      type,
+      status: 'active',
+      avatar: getAvatarForType(type),
+      tasks: 0,
+      revenue: 0,
+      efficiency: 85,
+      activity: 'Just created and initializing...',
+      lastActive: new Date(),
+      settings: settings || getDefaultSettings(type)
+    };
+    
+    mockDB.aiClones.push(newClone);
+    res.status(201).json({ data: newClone });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create clone' });
+  }
+});
+
+app.put('/api/clones/:id', authenticateToken, (req, res) => {
+  try {
+    const cloneIndex = mockDB.aiClones.findIndex(
+      clone => clone.id === req.params.id && clone.userId === req.user.userId
+    );
+    
+    if (cloneIndex === -1) {
+      return res.status(404).json({ error: 'Clone not found' });
+    }
+    
+    const updatedClone = { ...mockDB.aiClones[cloneIndex], ...req.body, lastActive: new Date() };
+    mockDB.aiClones[cloneIndex] = updatedClone;
+    
+    res.json({ data: updatedClone });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update clone' });
+  }
+});
+
+app.delete('/api/clones/:id', authenticateToken, (req, res) => {
+  try {
+    const cloneIndex = mockDB.aiClones.findIndex(
+      clone => clone.id === req.params.id && clone.userId === req.user.userId
+    );
+    
+    if (cloneIndex === -1) {
+      return res.status(404).json({ error: 'Clone not found' });
+    }
+    
+    mockDB.aiClones.splice(cloneIndex, 1);
+    res.json({ message: 'Clone deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete clone' });
+  }
+});
+
+// Income Streams Routes
+app.get('/api/income-streams', authenticateToken, (req, res) => {
+  try {
+    const userStreams = mockDB.incomeStreams.filter(stream => stream.userId === req.user.userId);
+    const totalRevenue = userStreams.reduce((sum, stream) => sum + stream.revenue, 0);
+    
+    res.json({ 
+      data: userStreams, 
+      count: userStreams.length,
+      totalRevenue,
+      averageGrowth: userStreams.reduce((sum, stream) => sum + stream.growth, 0) / userStreams.length
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch income streams' });
+  }
+});
+
+app.post('/api/income-streams', authenticateToken, (req, res) => {
+  try {
+    const { name, type, platform } = req.body;
+    
+    if (!name || !type || !platform) {
+      return res.status(400).json({ error: 'Name, type, and platform are required' });
+    }
+    
+    const newStream = {
+      id: uuidv4(),
+      userId: req.user.userId,
+      name,
+      type,
+      platform,
+      revenue: 0,
+      growth: 0,
+      status: 'initializing',
+      icon: getIconForType(type),
+      createdAt: new Date(),
+      lastUpdated: new Date()
+    };
+    
+    mockDB.incomeStreams.push(newStream);
+    
+    // Simulate automation setup
+    setTimeout(() => {
+      const streamIndex = mockDB.incomeStreams.findIndex(s => s.id === newStream.id);
+      if (streamIndex > -1) {
+        mockDB.incomeStreams[streamIndex].status = 'active';
+        mockDB.incomeStreams[streamIndex].revenue = Math.floor(Math.random() * 1000) + 100;
+        mockDB.incomeStreams[streamIndex].growth = Math.floor(Math.random() * 20) + 1;
+      }
+    }, 5000);
+    
+    res.status(201).json({ data: newStream });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create income stream' });
+  }
+});
+
+// Platform Sync Routes
+app.get('/api/platforms', authenticateToken, (req, res) => {
+  try {
+    const userPlatforms = mockDB.platforms.filter(platform => platform.userId === req.user.userId);
+    res.json({ data: userPlatforms });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch platforms' });
+  }
+});
+
+app.post('/api/platforms/sync', authenticateToken, (req, res) => {
+  try {
+    const { platformIds, action } = req.body;
+    
+    if (!platformIds || !Array.isArray(platformIds)) {
+      return res.status(400).json({ error: 'Platform IDs array is required' });
+    }
+    
+    const results = platformIds.map(platformId => {
+      const platform = mockDB.platforms.find(p => p.id === platformId && p.userId === req.user.userId);
+      if (!platform) {
+        return { platformId, success: false, error: 'Platform not found' };
+      }
+      
+      // Simulate sync operation
+      platform.lastSync = new Date();
+      platform.synced = true;
+      
+      return { platformId, success: true, lastSync: platform.lastSync };
+    });
+    
+    res.json({ results, message: 'Sync operation completed' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to sync platforms' });
+  }
+});
+
+// Activity Feed Routes
+app.get('/api/activities', authenticateToken, (req, res) => {
+  try {
+    const { limit = 20, offset = 0 } = req.query;
+    const userActivities = mockDB.activities
+      .filter(activity => activity.userId === req.user.userId)
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      .slice(offset, offset + parseInt(limit));
+    
+    res.json({ data: userActivities, hasMore: userActivities.length === parseInt(limit) });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch activities' });
+  }
+});
+
+// AI Commands Routes (Core Feature)
+app.post('/api/ai/command', authenticateToken, async (req, res) => {
+  try {
+    const { command, parameters } = req.body;
+    
+    if (!command) {
+      return res.status(400).json({ error: 'Command is required' });
+    }
+    
+    // Process AI commands
+    const result = await processAICommand(command, parameters, req.user.userId);
+    
+    // Log activity
+    mockDB.activities.push({
+      id: uuidv4(),
+      userId: req.user.userId,
+      action: `AI executed command: ${command}`,
+      type: 'ai_command',
+      timestamp: new Date(),
+      metadata: { command, parameters, result }
+    });
+    
+    res.json({ result, message: 'Command executed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to execute AI command' });
+  }
+});
+
+// Global Sync Routes
+app.post('/api/global-sync', authenticateToken, async (req, res) => {
+  try {
+    const { content, platforms, options } = req.body;
+    
+    if (!content || !platforms) {
+      return res.status(400).json({ error: 'Content and platforms are required' });
+    }
+    
+    // Simulate global sync across platforms
+    const syncResults = await simulateGlobalSync(content, platforms, options, req.user.userId);
+    
+    res.json({ 
+      results: syncResults,
+      message: 'Global sync initiated successfully'
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to initiate global sync' });
+  }
+});
+
+// Talent Recruitment Routes
+app.post('/api/recruitment/auto-hire', authenticateToken, async (req, res) => {
+  try {
+    const { role, requirements, budget } = req.body;
+    
+    if (!role || !requirements) {
+      return res.status(400).json({ error: 'Role and requirements are required' });
+    }
+    
+    // Simulate AI recruitment process
+    const recruitmentResult = await simulateAutoRecruitment(role, requirements, budget);
+    
+    mockDB.activities.push({
+      id: uuidv4(),
+      userId: req.user.userId,
+      action: `Auto-recruited ${role}`,
+      type: 'recruitment',
+      timestamp: new Date(),
+      metadata: { role, requirements, budget, result: recruitmentResult }
+    });
+    
+    res.json({ 
+      data: recruitmentResult,
+      message: 'Auto-recruitment process initiated'
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to initiate recruitment' });
+  }
+});
+
+// User Profile Routes
+app.get('/api/user/profile', authenticateToken, (req, res) => {
+  try {
+    const user = mockDB.users.find(u => u.id === req.user.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const { password, ...userProfile } = user;
+    res.json({ data: userProfile });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch profile' });
+  }
+});
+
+app.put('/api/user/profile', authenticateToken, (req, res) => {
+  try {
+    const userIndex = mockDB.users.findIndex(u => u.id === req.user.userId);
+    if (userIndex === -1) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const updatedUser = { 
+      ...mockDB.users[userIndex], 
+      ...req.body,
+      id: req.user.userId, // Prevent ID change
+      password: mockDB.users[userIndex].password // Prevent password change via this route
+    };
+    
+    mockDB.users[userIndex] = updatedUser;
+    
+    const { password, ...userProfile } = updatedUser;
+    res.json({ data: userProfile });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+// Analytics Routes
+app.get('/api/analytics/dashboard', authenticateToken, (req, res) => {
+  try {
+    const userClones = mockDB.aiClones.filter(c => c.userId === req.user.userId);
+    const userStreams = mockDB.incomeStreams.filter(s => s.userId === req.user.userId);
+    const userActivities = mockDB.activities.filter(a => a.userId === req.user.userId);
+    
+    const analytics = {
+      totalRevenue: userStreams.reduce((sum, stream) => sum + stream.revenue, 0),
+      activeClones: userClones.filter(c => c.status === 'active').length,
+      totalClones: userClones.length,
+      activeStreams: userStreams.filter(s => s.status === 'growing' || s.status === 'stable').length,
+      totalStreams: userStreams.length,
+      avgEfficiency: userClones.reduce((sum, c) => sum + c.efficiency, 0) / userClones.length || 0,
+      recentActivities: userActivities.slice(0, 10),
+      monthlyGrowth: calculateMonthlyGrowth(userStreams),
+      topPerformingClone: userClones.sort((a, b) => b.revenue - a.revenue)[0] || null
+    };
+    
+    res.json({ data: analytics });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch analytics' });
+  }
+});
+
+// Utility Functions
+function getAvatarForType(type) {
+  const avatars = {
+    'ceo': '👔',
+    'creator': '🎬',
+    'sales': '💼',
+    'support': '🎧',
+    'marketing': '📱',
+    'ops': '⚙️'
+  };
+  return avatars[type] || '🤖';
+}
+
+function getIconForType(type) {
+  const icons = {
+    'ecommerce': '🛍️',
+    'content': '📺',
+    'affiliate': '🔗',
+    'course': '📚',
+    'consulting': '💡',
+    'saas': '💻'
+  };
+  return icons[type] || '💰';
+}
+
+function getDefaultSettings(type) {
+  const defaults = {
+    'ceo': {
+      decisionThreshold: 'high',
+      autoApprove: false,
+      workingHours: '24/7'
+    },
+    'creator': {
+      platforms: ['youtube', 'tiktok', 'instagram'],
+      contentStyle: 'engaging',
+      postFrequency: 'daily'
+    },
+    'sales': {
+      leadThreshold: 'medium',
+      followUpCadence: '3-days',
+      closeRate: 'aggressive'
+    },
+    'support': {
+      responseTime: 'immediate',
+      escalationRules: 'complex-to-human',
+      languages: ['en']
+    }
+  };
+  return defaults[type] || {};
+}
+
+async function processAICommand(command, parameters, userId) {
+  // Simulate AI command processing
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  switch (command) {
+    case 'create_income_stream':
+      return { success: true, message: 'Income stream creation initiated', estimatedTime: '24 hours' };
+    case 'sync_platforms':
+      return { success: true, message: 'Platform sync completed', platformsUpdated: parameters.platforms?.length || 0 };
+    case 'optimize_content':
+      return { success: true, message: 'Content optimization complete', improvementScore: 85 };
+    default:
+      return { success: false, message: 'Unknown command' };
+  }
+}
+
+async function simulateGlobalSync(content, platforms, options, userId) {
+  // Simulate platform sync
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  return platforms.map(platform => ({
+    platform,
+    success: Math.random() > 0.1, // 90% success rate
+    postId: Math.random().toString(36).substr(2, 9),
+    engagement: Math.floor(Math.random() * 10000),
+    timestamp: new Date()
+  }));
+}
+
+async function simulateAutoRecruitment(role, requirements, budget) {
+  // Simulate recruitment process
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  
+  return {
+    candidatesFound: Math.floor(Math.random() * 20) + 5,
+    topCandidate: {
+      name: 'Alex Johnson',
+      rating: 4.8,
+      experience: '5+ years',
+      rate: budget ? budget * 0.8 : '$50/hour',
+      skills: requirements.split(',').slice(0, 3)
+    },
+    estimatedHireTime: '2-3 days',
+    success: true
+  };
+}
+
+function calculateMonthlyGrowth(streams) {
+  if (streams.length === 0) return 0;
+  
+  const totalGrowth = streams.reduce((sum, stream) => sum + stream.growth, 0);
+  return Math.round(totalGrowth / streams.length * 100) / 100;
+}
+
+// WebSocket for Real-time Updates (Optional)
+const http = require('http');
+const socketIo = require('socket.io');
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+  
+  socket.on('join_user_room', (userId) => {
+    socket.join(`user_${userId}`);
+    console.log(`User ${userId} joined their room`);
+  });
+  
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
+  });
+});
+
+// Broadcast real-time updates
+function broadcastUpdate(userId, type, data) {
+  io.to(`user_${userId}`).emit('update', { type, data, timestamp: new Date() });
+}
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Global error handler:', error);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// Start server
+const startServer = () => {
+  server.listen(PORT, () => {
+    console.log(`🚀 Ava AI Backend Server running on port ${PORT}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔐 JWT Secret: ${JWT_SECRET ? 'Set' : 'Not Set'}`);
+    console.log(`📡 Health Check: http://localhost:${PORT}/health`);
+  });
+};
+
+startServer();
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
+  });
+});
+
+module.exports = app
+{
+  "name": "ava-ai-platform",
+  "version": "1.0.0",
+  "description": "Ava AI - Complete automation platform with AI clones, income streams, and global sync",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "npm run build:frontend",
+    "build:frontend": "react-scripts build",
+    "test": "jest",
+    "lint": "eslint .",
+    "deploy": "npm run build && npm run start:production",
+    "start:production": "NODE_ENV=production node server.js",
+    "install:all": "npm install && cd client && npm install",
+    "dev:full": "concurrently \"npm run dev\" \"cd client && npm start\""
+  },
+  "keywords": [
+    "ai",
+    "automation",
+    "pwa",
+    "income-streams",
+    "ai-clones",
+    "digital-empire"
+  ],
+  "author": "Ava AI Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "uuid": "^9.0.1",
+    "socket.io": "^4.7.4",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.3",
+    "redis": "^4.6.10",
+    "axios": "^1.6.2",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.1",
+    "node-cron": "^3.0.3",
+    "winston": "^3.11.0",
+    "compression": "^1.7.4",
+    "express-validator": "^7.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.56.0",
+    "concurrently": "^8.2.2",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ava-ai-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/ava-ai-platform/issues"
+  },
+  "homepage": "https://ava-ai-platform.vercel.app"
+}
+# Dockerfile for Ava AI Platform
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json* ./
+RUN npm ci --only=production
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Set production environment
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Build the application
+RUN npm run build
+
+# Production image, copy all the files and run the app
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 avauser
+
+# Copy necessary files
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+USER avauser
+
+EXPOSE 3000 3001
+
+ENV PORT=3001
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]
+
+# ---
+
+# Docker Compose Configuration
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  ava-ai-app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=your-super-secure-jwt-secret-key-here
+      - MONGODB_URI=mongodb://mongo:27017/ava-ai
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: avaadmin
+      MONGO_INITDB_ROOT_PASSWORD: SecurePassword123
+      MONGO_INITDB_DATABASE: ava-ai
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass SecureRedisPassword123
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - ava-ai-app
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  redis_data:
+
+# ---
+
+# Nginx Configuration
+# nginx.conf
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream ava_app {
+        server ava-ai-app:3001;
+    }
+
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+    limit_req_zone $binary_remote_addr zone=app:10m rate=30r/s;
+
+    server {
+        listen 80;
+        server_name ava-ai.com www.ava-ai.com;
+        return 301 https://$server_name$request_uri;
+    }
+
+    server {
+        listen 443 ssl http2;
+        server_name ava-ai.com www.ava-ai.com;
+
+        # SSL Configuration
+        ssl_certificate /etc/nginx/ssl/cert.pem;
+        ssl_certificate_key /etc/nginx/ssl/key.pem;
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+        # PWA specific headers
+        add_header Cache-Control "public, max-age=31536000" always;
+        add_header Service-Worker-Allowed "/" always;
+
+        # Gzip compression
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+        location / {
+            limit_req zone=app burst=20 nodelay;
+            proxy_pass http://ava_app;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_cache_bypass $http_upgrade;
+        }
+
+        location /api/ {
+            limit_req zone=api burst=10 nodelay;
+            proxy_pass http://ava_app;
+            proxy_http_version 1.1;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # PWA manifest and service worker
+        location /manifest.json {
+            add_header Cache-Control "public, max-age=604800";
+        }
+
+        location /sw.js {
+            add_header Cache-Control "no-cache, no-store, must-revalidate";
+            add_header Pragma "no-cache";
+            add_header Expires "0";
+        }
+
+        # Static assets caching
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+    }
+}
+
+# ---
+
+# Environment Variables Template
+# .env.example
+
+# Server Configuration
+NODE_ENV=production
+PORT=3001
+HOST=0.0.0.0
+
+# Security
+JWT_SECRET=your-super-secure-jwt-secret-key-minimum-32-characters-long
+ENCRYPTION_KEY=another-super-secure
