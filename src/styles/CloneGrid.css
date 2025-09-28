@@ -1,0 +1,108 @@
+.clone-grid-section {
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.see-all-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.see-all-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.clones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.clone-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.clone-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.clone-card.new-clone {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+.clone-card.new-clone:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.clone-avatar {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.clone-card h4 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.clone-card p {
+  margin: 0 0 1rem 0;
+  opacity: 0.8;
+  font-size: 0.85rem;
+  min-height: 2.5rem;
+}
+
+.clone-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  border: 1px solid;
+}
+
+@media (max-width: 768px) {
+  .clones-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .clone-card {
+    padding: 1.25rem;
+  }
+  
+  .clone-avatar {
+    font-size: 1.75rem;
+  }
+}
